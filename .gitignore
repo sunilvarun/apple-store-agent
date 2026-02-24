@@ -1,0 +1,29 @@
+# Secrets
+.env
+
+# Python
+venv/
+__pycache__/
+*.pyc
+*.pyo
+*.egg-info/
+dist/
+build/
+.pytest_cache/
+
+# Raw + processed review data (large, re-collectable)
+pipeline/data/raw/
+pipeline/data/processed/
+
+# Keep derived artifacts (review_aspect_scores.json, iphone_catalog.json)
+!pipeline/data/derived/
+
+# Node
+frontend/node_modules/
+frontend/dist/
+
+# macOS
+.DS_Store
+
+# Jupyter
+.ipynb_checkpoints/
