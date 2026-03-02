@@ -3,7 +3,10 @@ import { X, Send, Trash2, ChevronDown } from "lucide-react";
 import { useChat } from "../../hooks/useChat";
 import MessageBubble from "./MessageBubble";
 import ToolCallVisualizer from "./ToolCallVisualizer";
+import ThinkingCard from "./ThinkingCard";
 import AppListInput from "./AppListInput";
+
+const demoMode = new URLSearchParams(window.location.search).get("demo") === "true";
 
 const SUGGESTIONS = [
   "Best iPhone for photography?",
@@ -94,7 +97,21 @@ export default function ChatPanel({ isOpen, onClose }) {
             </div>
           )}
 
-          {messages.map((msg, i) => <MessageBubble key={i} message={msg} />)}
+          {messages.map((msg, i) => {
+            if (msg.type === "tool_event") {
+              // Only render thinking cards in demo mode; silently skip otherwise
+              if (!demoMode) return null;
+              return (
+                <ThinkingCard
+                  key={msg.toolUseId ?? i}
+                  tool={msg.tool}
+                  input={msg.input}
+                  result={msg.result}
+                />
+              );
+            }
+            return <MessageBubble key={i} message={msg} />;
+          })}
           <ToolCallVisualizer tool={activeTool} />
           <div ref={bottomRef} />
         </div>
@@ -120,7 +137,9 @@ export default function ChatPanel({ isOpen, onClose }) {
               <Send size={13} className="text-white" />
             </button>
           </div>
-          <p className="text-center text-[10px] text-apple-light mt-2">Grounded in 8,700+ real reviews</p>
+          <p className="text-center text-[10px] text-apple-light mt-2">
+            Grounded in 10,600+ real reviews{demoMode && " · 🔍 Show thinking on"}
+          </p>
         </div>
       </div>
     </>

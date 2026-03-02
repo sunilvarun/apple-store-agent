@@ -11,8 +11,12 @@ export function useChat() {
   const appendToLast = useCallback((text) => {
     setMessages(prev => {
       const msgs = [...prev];
-      if (msgs.length && msgs[msgs.length - 1].role === "assistant") {
-        msgs[msgs.length - 1] = { ...msgs[msgs.length - 1], content: msgs[msgs.length - 1].content + text };
+      // Walk backwards to find last assistant message, skipping tool_events
+      for (let i = msgs.length - 1; i >= 0; i--) {
+        if (msgs[i].role === "assistant") {
+          msgs[i] = { ...msgs[i], content: msgs[i].content + text };
+          break;
+        }
       }
       return msgs;
     });
@@ -58,12 +62,35 @@ export function useChat() {
               appendToLast(event.content);
             } else if (event.type === "tool_use") {
               setActiveTool(event.tool);
+              // Store tool event inline so demo mode can render it later
+              setMessages(prev => [
+                ...prev,
+                {
+                  type: "tool_event",
+                  tool: event.tool,
+                  toolUseId: event.tool_use_id,
+                  input: event.input,
+                  result: null,
+                },
+              ]);
             } else if (event.type === "tool_result") {
               setActiveTool(null);
+              // Fill in result on the matching tool_event
+              setMessages(prev => prev.map(msg =>
+                msg.type === "tool_event" && msg.toolUseId === event.tool_use_id
+                  ? { ...msg, result: event.result }
+                  : msg
+              ));
             } else if (event.type === "done") {
               setMessages(prev => {
                 const msgs = [...prev];
-                if (msgs.length) msgs[msgs.length - 1] = { ...msgs[msgs.length - 1], streaming: false };
+                // Walk backwards to find last assistant message, skipping tool_events
+                for (let i = msgs.length - 1; i >= 0; i--) {
+                  if (msgs[i].role === "assistant") {
+                    msgs[i] = { ...msgs[i], streaming: false };
+                    break;
+                  }
+                }
                 return msgs;
               });
               setStreaming(false);
