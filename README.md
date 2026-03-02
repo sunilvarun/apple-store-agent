@@ -1,6 +1,8 @@
 # Apple Store Agentic Commerce
 
-An AI-powered iPhone recommendation engine that combines real review sentiment analysis with an agentic Claude-powered shopping assistant.
+An AI-powered iPhone recommendation engine combining real review sentiment analysis with an agentic Claude-powered shopping assistant.
+
+**Live stack:** React frontend · FastAPI backend · Claude claude-sonnet-4-6 agent · 10,621 real reviews (YouTube comments, Reddit posts, and video transcripts)
 
 ---
 
@@ -8,16 +10,27 @@ An AI-powered iPhone recommendation engine that combines real review sentiment a
 
 ```
 apple-store-agent/
-├── pipeline/          ← Step 1: one-time review data collection + ABSA
-├── backend/           ← Step 2: FastAPI + Claude agent (coming soon)
-└── frontend/          ← Step 3: React Apple Store UI (coming soon)
+├── pipeline/          ← one-time review data collection + ABSA
+│   ├── collect/       ← YouTube comments, Reddit posts, YouTube transcripts
+│   ├── process/       ← normalize, deduplicate, run ABSA
+│   ├── data/derived/  ← review_aspect_scores.json + review_quotes.json (committed)
+│   └── tests/         ← synthetic ABSA validation
+├── backend/           ← FastAPI + Claude agent (complete)
+│   ├── agent/         ← claude_agent.py, tool_definitions.py, tool_handlers.py
+│   ├── catalog/       ← catalog_store.py, iphone_catalog.json
+│   ├── api/           ← routes for /chat, /catalog, /admin
+│   └── models/        ← Pydantic models
+└── frontend/          ← React + Vite Apple Store UI (complete)
+    └── src/
+        ├── components/ ← NavBar, ProductGrid, ChatPanel, ComparisonTable, CartDrawer
+        └── hooks/      ← useChat (SSE), useCatalog, useComparison
 ```
 
 ---
 
-## Step 1: Review Data Pipeline
+## Review Data Pipeline
 
-This runs **once** to generate `pipeline/data/derived/review_aspect_scores.json`, which the recommendation engine uses to score phones on camera, battery, performance, etc.
+This runs **once** to generate `pipeline/data/derived/review_aspect_scores.json` and `review_quotes.json`, which the recommendation engine uses to score phones and surface real reviewer quotes.
 
 ### 1. Setup
 
@@ -33,30 +46,21 @@ cp .env.example .env
 
 #### YouTube Data API v3
 1. Go to [console.cloud.google.com](https://console.cloud.google.com)
-2. Create a new project (or use an existing one)
-3. Go to **APIs & Services → Library** → search "YouTube Data API v3" → Enable
-4. Go to **APIs & Services → Credentials** → **Create Credentials → API Key**
-5. Copy the key into `.env`:
-   ```
-   YOUTUBE_API_KEY=AIza...
-   ```
-6. **Quota:** 10,000 units/day (free). This pipeline uses ~300 units total.
+2. Create a new project → **APIs & Services → Library** → enable "YouTube Data API v3"
+3. **Credentials → Create Credentials → API Key**
+4. Add to `.env`: `YOUTUBE_API_KEY=AIza...`
+5. **Quota:** 10,000 units/day (free). This pipeline uses ~300 units total.
 
 #### Reddit API (PRAW)
-1. Go to [reddit.com/prefs/apps](https://www.reddit.com/prefs/apps)
-2. Scroll down → click **"create another app"**
-3. Select **"script"**, give it any name (e.g. `iphone17-research`)
-4. Set redirect URI to `http://localhost:8080`
-5. Copy the values into `.env`:
+1. Go to [reddit.com/prefs/apps](https://www.reddit.com/prefs/apps) → **"create another app"** → script type
+2. Add to `.env`:
    ```
-   REDDIT_CLIENT_ID=abc123        ← shown under app name
-   REDDIT_CLIENT_SECRET=xyz789    ← shown as "secret"
+   REDDIT_CLIENT_ID=abc123
+   REDDIT_CLIENT_SECRET=xyz789
    REDDIT_USER_AGENT=iphone17-research/1.0 by /u/your_username
    ```
 
 ### 3. Validate the ABSA pipeline (no API keys needed)
-
-Run the synthetic test first to confirm the aspect detection and sentiment scoring work correctly before collecting real data:
 
 ```bash
 python pipeline/tests/test_absa_synthetic.py
@@ -69,8 +73,6 @@ Sentiment direction accuracy: 16/20 = 80%
 RESULT: PASS — Pipeline is ready for real data collection.
 ```
 
-If it fails, check the failure details and adjust `ASPECT_THRESHOLD` in `run_absa.py`.
-
 ### 4. Collect review data
 
 ```bash
@@ -79,52 +81,93 @@ python pipeline/collect/youtube_collector.py
 
 # Reddit threads + comments (~5 min)
 python pipeline/collect/reddit_collector.py
+
+# YouTube video transcripts (no API key needed — free)
+python pipeline/collect/transcript_collector.py
 ```
 
 Outputs:
 - `pipeline/data/raw/youtube_comments_iphone17.jsonl`
 - `pipeline/data/raw/reddit_iphone17.jsonl`
+- `pipeline/data/raw/youtube_transcripts_iphone17.jsonl`
 
 ### 5. Process and score
 
 ```bash
-# Normalize + deduplicate
+# Normalize + deduplicate all three sources
 python pipeline/process/normalize_reviews.py
 
 # Run ABSA (~15-30 min depending on volume)
 python pipeline/process/run_absa.py
 ```
 
-Final output: `pipeline/data/derived/review_aspect_scores.json`
+Final outputs:
+- `pipeline/data/derived/review_aspect_scores.json` — per-model, per-aspect sentiment scores
+- `pipeline/data/derived/review_quotes.json` — verbatim reviewer quotes + positive_pct per aspect
 
-Example:
+Example output:
 ```json
 {
-  "iphone-17-pro-max": {
-    "camera":      {"score": 0.84, "volume": 1420, "confidence": 1.0},
-    "battery":     {"score": 0.71, "volume":  980, "confidence": 1.0},
-    "performance": {"score": 0.79, "volume": 1100, "confidence": 1.0},
-    "heating":     {"score": 0.55, "volume":  240, "confidence": 0.48}
+  "iphone-17-pro": {
+    "camera": {
+      "positive_pct": 79,
+      "total_mentions": 985,
+      "quotes": [
+        {"text": "The low light performance is stunning, way better than my old phone.", "sentiment": "positive"},
+        {"text": "Portrait mode nails the bokeh without making it look fake.", "sentiment": "positive"},
+        {"text": "ProRes files are huge and fill up storage fast.", "sentiment": "negative"}
+      ]
+    }
   }
 }
 ```
 
 ---
 
-## Success Criteria
+## Backend
 
-| Check | Target |
-|-------|--------|
-| Synthetic test aspect accuracy | ≥ 80% |
-| Synthetic test sentiment accuracy | ≥ 75% |
-| Models with confidence > 0.5 on ≥ 4 aspects | ≥ 3 models |
-| Normalized reviews per major model | ≥ 1,000 |
+FastAPI server with a Claude claude-sonnet-4-6 agentic loop and 5 tools for product search, ranking, and comparison.
+
+```bash
+cd ~/Documents/apple-store-agent/backend
+source ../venv/bin/activate
+cp .env.example .env   # add ANTHROPIC_API_KEY=sk-ant-...
+uvicorn main:app --reload --port 8000
+```
+
+Key endpoints:
+- `GET /api/health` — `{"status":"ok","catalog_loaded":true,"model_count":4}`
+- `GET /api/catalog` — full iPhone catalog with specs
+- `POST /api/chat` — SSE streaming chat with Claude agent
 
 ---
 
-## What's Next
+## Frontend
 
-Once `review_aspect_scores.json` is generated and looks good:
+React + Vite Apple Store UI with streaming chat panel, comparison table, and product modal.
 
-- **backend/**: FastAPI server + Claude claude-sonnet-4-6 agent with tool_use for recommendations
-- **frontend/**: React + Vite Apple Store UI with chat panel and comparison table
+```bash
+cd ~/Documents/apple-store-agent/frontend
+npm install
+npm run dev   # → http://localhost:5173
+```
+
+Vite proxies `/api/*` → `localhost:8000` automatically.
+
+---
+
+## Success Criteria
+
+| Check | Target | Actual |
+|-------|--------|--------|
+| Synthetic test aspect accuracy | ≥ 80% | 85% |
+| Synthetic test sentiment accuracy | ≥ 75% | 80% |
+| Models with confidence > 0.5 on ≥ 4 aspects | ≥ 3 models | 4 models |
+| Normalized reviews per major model | ≥ 1,000 | ≥ 2,600 |
+| Total normalized review corpus | — | 10,621 |
+
+---
+
+## How It Works
+
+See [HOW_IT_WORKS.md](HOW_IT_WORKS.md) for a plain-English deep dive into the AI architecture — the agentic loop, the ABSA pipeline, the blended ranking formula, and how reviewer quotes surface in recommendations.

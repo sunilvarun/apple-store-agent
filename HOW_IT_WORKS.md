@@ -27,9 +27,9 @@ Most product recommendation systems do one of two things:
 - **Filter by specs** — "You want 5x zoom? Here are phones with 5x zoom." Cold, mechanical.
 - **Ask an LLM** — "Hey ChatGPT, what's the best iPhone?" The model answers from memory, which may be months or years out of date, and cites no evidence.
 
-This app combines both approaches with a third ingredient: **real customer sentiment**, extracted from thousands of YouTube comments and Reddit posts written by actual users after they bought these phones.
+This app combines both approaches with a third ingredient: **real customer sentiment**, extracted from thousands of YouTube comments, Reddit posts, and video transcripts written and spoken by actual users after they bought these phones.
 
-The result: a recommendation that sounds like advice from a knowledgeable friend who has read every review on the internet — and can show their work.
+The result: a recommendation that sounds like advice from a knowledgeable friend who has read (and watched) every review on the internet — and can quote real reviewers to back it up.
 
 ---
 
@@ -45,9 +45,9 @@ In this app, when you ask "Which iPhone is best for photography?", Claude doesn'
 
 1. **Decides what tools to use** (like a researcher choosing which databases to query)
 2. **Calls those tools** (which run real code that looks up real data)
-3. **Reads the results** (specs from Apple's catalog, review scores from 8,737 real comments)
+3. **Reads the results** (specs from Apple's catalog, sentiment from 10,621 real reviews + quotes)
 4. **Reasons over the results** and synthesizes an answer
-5. **Responds** with a recommendation grounded in that data
+5. **Responds** with a recommendation grounded in that data, using real reviewer words as evidence
 
 This loop — think → act → observe → think again — is what makes it "agentic." Claude is not a lookup table. It is a reasoning engine that directs its own research process.
 
@@ -59,12 +59,14 @@ This loop — think → act → observe → think again — is what makes it "ag
 ┌─────────────────────────────────────────────────────────┐
 │  LAYER 3: Claude Agent (the "brain")                    │
 │  Understands intent, directs tools, synthesizes answer  │
+│  Translates data into human language + verbatim quotes  │
 ├─────────────────────────────────────────────────────────┤
 │  LAYER 2: Recommendation Engine (the "calculator")      │
 │  Scores phones on specs + reviews, ranks candidates     │
 ├─────────────────────────────────────────────────────────┤
 │  LAYER 1: Review Data Pipeline (the "research")         │
-│  Collected 8,737 real reviews → extracted sentiment     │
+│  Collected 10,621 real reviews → extracted sentiment    │
+│  + best verbatim quotes per aspect per model            │
 └─────────────────────────────────────────────────────────┘
 ```
 
@@ -86,40 +88,41 @@ For that, you need to hear from people who actually bought and used the phone. T
 
 ### Step 1: Data Collection
 
-We collected comments from two sources using their public APIs:
+We collected content from three sources:
 
 | Source | What we collected | Volume |
 |--------|------------------|--------|
-| YouTube | Comments on iPhone 17 review videos | 11,447 comments from 54 videos |
-| Reddit | Posts from r/apple, r/iphone, r/iPhonePhotography | 1,138 comments |
-| **Total** | | **12,585 raw comments** |
+| YouTube comments | Comments on iPhone 17 review videos (54 videos via YouTube Data API) | ~11,400 comments |
+| Reddit | Posts from r/apple, r/iphone, r/iPhonePhotography | ~1,100 comments |
+| YouTube transcripts | Spoken audio of those same review videos (no API key needed) | ~1,950 transcript chunks from 29 videos |
+| **Total raw** | | **~14,400 items** |
 
-We searched for queries like _"iPhone 17 Pro camera test"_, _"iPhone 17 Air review"_, _"iPhone 17 battery life"_ to find relevant videos and threads.
+We searched for queries like _"iPhone 17 Pro camera test"_, _"iPhone 17 Air review"_, _"iPhone 17 battery life"_ to find relevant videos and threads. The transcripts add a dimension that comments can't — the actual reviewer's spoken analysis, not just audience reactions.
 
 ### Step 2: Cleaning and Labeling
 
-Not all comments are useful. We filtered out:
-- Comments under 10 words (too short to contain real signal)
+Not all content is useful. We filtered out:
+- Comments/chunks under 10 words (too short to contain real signal)
 - Spam (all-caps, repetitive characters, emoji-only)
-- Near-duplicates (comments that were essentially copy-pasted)
+- Near-duplicates (content that was essentially copy-pasted)
 
-We also had to figure out **which iPhone model each comment was about**. This sounds easy but is surprisingly hard — most people just write "the camera is amazing" without saying which iPhone. We solved this by:
+We also had to figure out **which iPhone model each piece of content was about**. This sounds easy but is surprisingly hard — most people just write "the camera is amazing" without saying which iPhone. We solved this by:
 
-1. Scanning the comment text for model keywords ("Pro Max", "Air", etc.)
-2. If no match, falling back to the **video title** ("iPhone 17 Pro Review" tells us the model even if the comment doesn't)
+1. Scanning the text for model keywords ("Pro Max", "Air", etc.)
+2. If no match, falling back to the **video title** or **thread title** (which almost always names the model explicitly)
 
-After cleaning: **8,737 usable reviews** across 4 models, all above 1,000 reviews per model.
+After cleaning: **10,621 usable reviews** across 4 models, all above 1,000 reviews per model.
 
 | Model | Reviews |
 |-------|---------|
-| iPhone 17 Pro | 2,756 |
-| iPhone 17 Pro Max | 2,218 |
-| iPhone 17 Air | 1,902 |
-| iPhone 17 | 1,861 |
+| iPhone 17 Pro | 3,200+ |
+| iPhone 17 Pro Max | 2,600+ |
+| iPhone 17 Air | 2,400+ |
+| iPhone 17 | 2,200+ |
 
 ### Step 3: Aspect-Based Sentiment Analysis (ABSA)
 
-This is the core intellectual contribution of the pipeline. Instead of asking "is this comment positive or negative overall?", we ask: **"For each specific aspect of the phone, what does this comment say — and is it positive or negative?"**
+This is the core intellectual contribution of the pipeline. Instead of asking "is this comment positive or negative overall?", we ask: **"For each specific aspect of the phone, what does this content say — and is it positive or negative?"**
 
 The 8 aspects we track:
 
@@ -144,25 +147,50 @@ We take each aspect's keywords, compute their average vector (the "centroid"), t
 
 We use a tool called **VADER** (Valence Aware Dictionary and sEntiment Reasoner), designed specifically for social media language. It handles things like capitalization ("SO good" vs "so good"), punctuation ("great!!!" vs "great"), and negation ("not bad" is positive, not negative).
 
-Each comment gets a sentiment score from -1.0 (very negative) to +1.0 (very positive).
+Each piece of content gets a sentiment score from -1.0 (very negative) to +1.0 (very positive).
 
-**The output:**
+### Step 4: Quote Extraction
 
-For each model + aspect combination, we compute:
-- **Mean sentiment score** (rescaled to 0–1, where 0.5 is neutral)
-- **Volume** (how many comments mentioned this aspect)
-- **Confidence** (how much to trust the score — higher volume = higher confidence, capped at 1.0 after 500+ mentions)
+Beyond scores, we extract the **best verbatim quotes** per model and aspect. These are the sentences that will actually appear in recommendations — real words from real reviewers.
 
-This gives us a table like:
+For a quote to qualify, it must:
+- Be between 12 and 70 words (long enough to be informative, short enough to read)
+- Have a VADER sentiment score with absolute value ≥ 0.25 (strongly positive or negative)
+- Not be in ALL CAPS (spam filter)
 
-| Model | Camera Score | Battery Score | Value Score | ... |
-|-------|-------------|---------------|-------------|-----|
-| iPhone 17 Pro | 0.604 | 0.589 | 0.571 | ... |
-| iPhone 17 Pro Max | 0.598 | 0.601 | 0.563 | ... |
-| iPhone 17 Air | 0.581 | 0.556 | 0.534 | ... |
-| iPhone 17 | 0.572 | 0.578 | 0.587 | ... |
+For each model + aspect, we keep:
+- **Top 2 positive quotes** (strongest sentiment, most persuasive)
+- **Top 1 negative quote** (honest about tradeoffs)
 
-This table — `review_aspect_scores.json` — is the permanent artifact that powers every recommendation. It was computed once from 8,737 real reviews and lives in the codebase.
+**The output — two files:**
+
+`review_aspect_scores.json` — numerical summary per model/aspect:
+```json
+{
+  "iphone-17-pro": {
+    "camera": {"score": 0.604, "volume": 985, "confidence": 1.0, "positive_pct": 79}
+  }
+}
+```
+
+`review_quotes.json` — human-readable evidence per model/aspect:
+```json
+{
+  "iphone-17-pro": {
+    "camera": {
+      "positive_pct": 79,
+      "total_mentions": 985,
+      "quotes": [
+        {"text": "The low light performance is stunning, way better than my old phone.", "sentiment": "positive"},
+        {"text": "Portrait mode nails the bokeh without making it look fake.", "sentiment": "positive"},
+        {"text": "ProRes files are huge and fill up storage fast.", "sentiment": "negative"}
+      ]
+    }
+  }
+}
+```
+
+The quotes file is what makes recommendations feel real — instead of "camera score: 0.604", Claude can say "79% of nearly 1,000 reviewers praised the camera — one noted 'the low light performance is stunning, way better than my old phone.'"
 
 ---
 
@@ -211,10 +239,6 @@ Each spec is converted to a 0–1 score relative to the current catalog. Example
 | Weight | Lighter = higher score (inverted) | Portability |
 | Value | Lower starting price = higher score (inverted) | Affordability |
 
-**How Review Scores feed in:**
-
-The review score for a given aspect (e.g., "camera") for a given phone comes directly from the ABSA pipeline. If you prioritize "camera", the camera review score flows into your personalized ranking with full weight. If you prioritize "battery", the battery score dominates.
-
 **The final ranking:**
 
 ```
@@ -237,7 +261,7 @@ Claude has access to exactly 5 tools, each a precise function:
 |------|-------------|---------------------|
 | `extract_preferences` | Converts natural language into a structured PreferenceVector | Always first — understands what you actually want |
 | `search_catalog` | Filters the iPhone catalog by series, price, tier | Narrows candidates before deep analysis |
-| `get_product_details` | Returns full specs + review scores for one model | Deep-dive on a specific phone |
+| `get_product_details` | Returns full specs + review evidence for one model | Deep-dive on a specific phone |
 | `rank_iphones` | Runs the blended scorer on a list of candidates | The core recommendation step |
 | `compare_products` | Side-by-side comparison of 2–3 models | When you ask "what's the difference between X and Y?" |
 
@@ -248,7 +272,8 @@ Claude receives a set of hard instructions before every conversation:
 - **Always use tools.** Never answer from memory or training data. Specs change. Reviews are real data. Use them.
 - **Never invent specifications.** If a spec isn't in the catalog, say so.
 - **Use `rank_iphones` for recommendations.** Don't reason intuitively about which phone wins — run the numbers.
-- **Cite evidence.** When you make a claim ("the Pro Max has the best battery"), you should have the review data to back it up.
+- **Translate evidence into human language.** The tool results contain `positive_pct`, `total_mentions`, and `sample_quotes`. Claude is instructed to turn these into sentences like: "Over 79% of reviewers praised the camera — one noted 'the low light performance is stunning.'" Raw numbers never appear in the output.
+- **Use verbatim quotes.** The sample_quotes field contains real words from real reviewers. Claude is instructed to use them as-is — not paraphrase them.
 
 This is called "grounding" — anchoring the model's outputs to verifiable, structured data rather than letting it speculate.
 
@@ -293,12 +318,17 @@ Let's trace exactly what happens when you type: **"Best iPhone for photography u
 **Turn 2 — Claude receives those results and calls the ranker:**
 - Calls `rank_iphones` with the 3 candidates and your PreferenceVector
 - The engine computes blended scores for each, weighted toward camera
-- Returns ranked list: `[iPhone 17 Pro (0.81), iPhone 17 Air (0.74), iPhone 17 (0.71)]`
+- Returns ranked list with review evidence per aspect, including quotes
 
 **Turn 3 — Claude has everything it needs. It generates the answer:**
-> "Based on specs and 2,756 real user reviews, the **iPhone 17 Pro** is the best photography phone under $1,100. Its 3-camera system with 5× optical zoom and ProRAW support earns a camera sentiment score of 0.604 from 795 dedicated camera reviews — the highest volume of any model. If you want to save $100 and don't need telephoto zoom, the iPhone 17 Air is a solid runner-up..."
 
-The entire process takes 3–6 seconds. No information was hallucinated. Every claim traces back to either a spec in the catalog or a score derived from real reviews.
+> "Based on nearly 1,000 camera reviews, the **iPhone 17 Pro** is the standout photography phone under $1,100. Over 79% of reviewers praised it — one said 'the low light performance is stunning, way better than my old phone.' Its 3-camera system with 5× optical zoom and ProRAW gives you pro-level control.
+>
+> One honest tradeoff: several reviewers flagged that ProRes video files eat through storage quickly, so 256GB is the minimum I'd recommend.
+>
+> If you want to save $200 and don't need telephoto zoom, the **iPhone 17 Air** is a solid runner-up — lighter, cheaper, and reviewers largely praised its camera too."
+
+The entire process takes 3–6 seconds. No information was hallucinated. Every claim traces back to either a spec in the catalog or a real reviewer quote.
 
 ---
 
@@ -326,13 +356,13 @@ Unknown apps default to "medium" requirements on all dimensions.
 | | This App | ChatGPT / Generic LLM |
 |---|---|---|
 | **Data freshness** | Grounded in real iPhone 17 reviews collected now | Training data cut-off, may describe old models |
-| **Source of truth** | Specs from structured catalog, sentiment from 8,737 real reviews | Model's internal weights (impossible to audit) |
-| **Auditability** | "iPhone 17 Pro camera score: 0.604 from 795 reviews" | "Trust me" |
+| **Source of truth** | Specs from structured catalog, sentiment from 10,621 real reviews | Model's internal weights (impossible to audit) |
+| **Auditability** | "79% of 985 reviewers praised the camera — one said 'the low light performance is stunning'" | "Trust me" |
 | **Hallucination risk** | Low — agent is prohibited from using memory for specs | High — models confabulate specs confidently |
 | **Personalization** | PreferenceVector + app-to-hardware mapping | Generic advice |
 | **Ranking** | Deterministic blended scorer with explicit weights | Intuitive reasoning (opaque) |
 
-The key insight: **LLMs are excellent reasoners but poor fact-keepers.** This architecture plays to Claude's strength (reasoning, synthesis, natural language) while compensating for its weakness (factual recall) by giving it tools backed by structured, verified data.
+The key insight: **LLMs are excellent reasoners but poor fact-keepers.** This architecture plays to Claude's strength (reasoning, synthesis, natural language) while compensating for its weakness (factual recall) by giving it tools backed by structured, verified data — including real reviewer words it can quote verbatim.
 
 ---
 
@@ -341,6 +371,8 @@ The key insight: **LLMs are excellent reasoners but poor fact-keepers.** This ar
 No system is perfect. Here's what to know:
 
 **Review data is YouTube/Reddit-biased.** These platforms skew toward enthusiasts and power users. A casual user who bought an iPhone 17 and is happy with it probably didn't leave a YouTube comment. This means sentiment scores may underweight "good enough" satisfaction.
+
+**Transcript coverage is partial.** We got transcripts from 29 of 54 videos before YouTube rate-limited us (~1,950 transcript chunks). The remaining 25 videos could be retried to add more signal, especially for spoken reviewer analysis.
 
 **ABSA has ~75% sentiment accuracy.** In testing against 20 hand-labeled reviews, the pipeline got sentiment direction right 15/20 times. At 2,000+ reviews per model, the errors average out — but individual scores should be treated as directional signals, not precise measurements.
 
@@ -353,4 +385,4 @@ No system is perfect. Here's what to know:
 ---
 
 *Built with Claude claude-sonnet-4-6 (Anthropic), FastAPI, React, sentence-transformers, and VADER sentiment analysis.*
-*Review data: 8,737 comments from YouTube and Reddit, collected February 2026.*
+*Review data: 10,621 reviews from YouTube comments, Reddit, and YouTube video transcripts — collected February 2026.*
