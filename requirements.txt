@@ -1,6 +1,7 @@
 # Data collection
 google-api-python-client>=2.0.0
 praw>=7.7.0
+youtube-transcript-api>=0.6.0
 
 # NLP / ABSA
 sentence-transformers>=2.2.0

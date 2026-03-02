@@ -1,202 +1,202 @@
 {
   "iphone-17-pro": {
     "camera": {
-      "score": 0.6042,
-      "raw_vader_mean": 0.2083,
-      "volume": 795,
+      "score": 0.6064,
+      "raw_vader_mean": 0.2128,
+      "volume": 985,
       "confidence": 1.0
     },
     "battery": {
-      "score": 0.5757,
-      "raw_vader_mean": 0.1514,
-      "volume": 239,
-      "confidence": 0.478
+      "score": 0.5835,
+      "raw_vader_mean": 0.167,
+      "volume": 294,
+      "confidence": 0.588
     },
     "performance": {
-      "score": 0.5885,
-      "raw_vader_mean": 0.1771,
-      "volume": 34,
-      "confidence": 0.068
+      "score": 0.5945,
+      "raw_vader_mean": 0.1891,
+      "volume": 67,
+      "confidence": 0.134
     },
     "display": {
-      "score": 0.5705,
-      "raw_vader_mean": 0.141,
+      "score": 0.5846,
+      "raw_vader_mean": 0.1692,
+      "volume": 207,
+      "confidence": 0.414
+    },
+    "heating": {
+      "score": 0.5977,
+      "raw_vader_mean": 0.1953,
+      "volume": 50,
+      "confidence": 0.1
+    },
+    "durability": {
+      "score": 0.5415,
+      "raw_vader_mean": 0.0829,
+      "volume": 100,
+      "confidence": 0.2
+    },
+    "value": {
+      "score": 0.5878,
+      "raw_vader_mean": 0.1756,
       "volume": 149,
       "confidence": 0.298
     },
-    "heating": {
-      "score": 0.5896,
-      "raw_vader_mean": 0.1791,
-      "volume": 35,
-      "confidence": 0.07
-    },
-    "durability": {
-      "score": 0.5261,
-      "raw_vader_mean": 0.0522,
-      "volume": 79,
-      "confidence": 0.158
-    },
-    "value": {
-      "score": 0.5856,
-      "raw_vader_mean": 0.1712,
-      "volume": 131,
-      "confidence": 0.262
-    },
     "weight": {
-      "score": 0.524,
-      "raw_vader_mean": 0.0479,
-      "volume": 15,
-      "confidence": 0.03
+      "score": 0.5851,
+      "raw_vader_mean": 0.1702,
+      "volume": 25,
+      "confidence": 0.05
     }
   },
   "iphone-17-pro-max": {
     "camera": {
-      "score": 0.5938,
-      "raw_vader_mean": 0.1875,
-      "volume": 366,
-      "confidence": 0.732
+      "score": 0.5988,
+      "raw_vader_mean": 0.1975,
+      "volume": 531,
+      "confidence": 1.0
     },
     "battery": {
-      "score": 0.555,
-      "raw_vader_mean": 0.11,
-      "volume": 440,
-      "confidence": 0.88
+      "score": 0.5618,
+      "raw_vader_mean": 0.1237,
+      "volume": 523,
+      "confidence": 1.0
     },
     "value": {
-      "score": 0.5444,
-      "raw_vader_mean": 0.0888,
-      "volume": 115,
-      "confidence": 0.23
+      "score": 0.5586,
+      "raw_vader_mean": 0.1173,
+      "volume": 149,
+      "confidence": 0.298
     },
     "display": {
-      "score": 0.5757,
-      "raw_vader_mean": 0.1513,
-      "volume": 123,
-      "confidence": 0.246
+      "score": 0.5889,
+      "raw_vader_mean": 0.1777,
+      "volume": 189,
+      "confidence": 0.378
     },
     "heating": {
-      "score": 0.594,
-      "raw_vader_mean": 0.1879,
-      "volume": 52,
-      "confidence": 0.104
+      "score": 0.6229,
+      "raw_vader_mean": 0.2457,
+      "volume": 83,
+      "confidence": 0.166
     },
     "durability": {
-      "score": 0.5277,
-      "raw_vader_mean": 0.0554,
-      "volume": 51,
-      "confidence": 0.102
+      "score": 0.5409,
+      "raw_vader_mean": 0.0817,
+      "volume": 84,
+      "confidence": 0.168
     },
     "weight": {
-      "score": 0.5789,
-      "raw_vader_mean": 0.1578,
-      "volume": 28,
-      "confidence": 0.056
+      "score": 0.5612,
+      "raw_vader_mean": 0.1225,
+      "volume": 46,
+      "confidence": 0.092
     },
     "performance": {
-      "score": 0.5473,
-      "raw_vader_mean": 0.0947,
-      "volume": 55,
-      "confidence": 0.11
+      "score": 0.5443,
+      "raw_vader_mean": 0.0886,
+      "volume": 94,
+      "confidence": 0.188
     }
   },
   "iphone-17": {
     "value": {
-      "score": 0.5908,
-      "raw_vader_mean": 0.1816,
-      "volume": 132,
-      "confidence": 0.264
+      "score": 0.5878,
+      "raw_vader_mean": 0.1755,
+      "volume": 155,
+      "confidence": 0.31
     },
     "performance": {
-      "score": 0.5975,
-      "raw_vader_mean": 0.195,
-      "volume": 33,
-      "confidence": 0.066
+      "score": 0.5754,
+      "raw_vader_mean": 0.1508,
+      "volume": 62,
+      "confidence": 0.124
     },
     "display": {
-      "score": 0.5967,
-      "raw_vader_mean": 0.1934,
-      "volume": 98,
-      "confidence": 0.196
+      "score": 0.6137,
+      "raw_vader_mean": 0.2274,
+      "volume": 154,
+      "confidence": 0.308
     },
     "camera": {
-      "score": 0.6088,
-      "raw_vader_mean": 0.2176,
-      "volume": 257,
-      "confidence": 0.514
+      "score": 0.6155,
+      "raw_vader_mean": 0.231,
+      "volume": 386,
+      "confidence": 0.772
     },
     "battery": {
       "score": 0.5952,
-      "raw_vader_mean": 0.1904,
-      "volume": 285,
-      "confidence": 0.57
+      "raw_vader_mean": 0.1905,
+      "volume": 326,
+      "confidence": 0.652
     },
     "durability": {
-      "score": 0.5792,
-      "raw_vader_mean": 0.1583,
-      "volume": 13,
-      "confidence": 0.026
+      "score": 0.5821,
+      "raw_vader_mean": 0.1642,
+      "volume": 26,
+      "confidence": 0.052
     },
     "heating": {
-      "score": 0.5446,
-      "raw_vader_mean": 0.0892,
-      "volume": 14,
-      "confidence": 0.028
-    },
-    "weight": {
-      "score": 0.58,
-      "raw_vader_mean": 0.1599,
-      "volume": 9,
-      "confidence": 0.018
-    }
-  },
-  "iphone-17-air": {
-    "value": {
-      "score": 0.5343,
-      "raw_vader_mean": 0.0687,
-      "volume": 111,
-      "confidence": 0.222
-    },
-    "camera": {
-      "score": 0.5852,
-      "raw_vader_mean": 0.1703,
-      "volume": 279,
-      "confidence": 0.558
-    },
-    "battery": {
-      "score": 0.5562,
-      "raw_vader_mean": 0.1124,
-      "volume": 304,
-      "confidence": 0.608
-    },
-    "heating": {
-      "score": 0.5675,
-      "raw_vader_mean": 0.1349,
-      "volume": 23,
-      "confidence": 0.046
-    },
-    "durability": {
-      "score": 0.5476,
-      "raw_vader_mean": 0.0951,
-      "volume": 27,
-      "confidence": 0.054
-    },
-    "performance": {
-      "score": 0.6044,
-      "raw_vader_mean": 0.2088,
+      "score": 0.5509,
+      "raw_vader_mean": 0.1019,
       "volume": 22,
       "confidence": 0.044
     },
     "weight": {
-      "score": 0.5867,
-      "raw_vader_mean": 0.1734,
-      "volume": 75,
-      "confidence": 0.15
+      "score": 0.5744,
+      "raw_vader_mean": 0.1487,
+      "volume": 13,
+      "confidence": 0.026
+    }
+  },
+  "iphone-17-air": {
+    "value": {
+      "score": 0.53,
+      "raw_vader_mean": 0.0601,
+      "volume": 120,
+      "confidence": 0.24
+    },
+    "camera": {
+      "score": 0.5884,
+      "raw_vader_mean": 0.1769,
+      "volume": 350,
+      "confidence": 0.7
+    },
+    "battery": {
+      "score": 0.562,
+      "raw_vader_mean": 0.1241,
+      "volume": 339,
+      "confidence": 0.678
+    },
+    "heating": {
+      "score": 0.5778,
+      "raw_vader_mean": 0.1557,
+      "volume": 28,
+      "confidence": 0.056
+    },
+    "durability": {
+      "score": 0.5395,
+      "raw_vader_mean": 0.079,
+      "volume": 37,
+      "confidence": 0.074
+    },
+    "performance": {
+      "score": 0.622,
+      "raw_vader_mean": 0.244,
+      "volume": 28,
+      "confidence": 0.056
+    },
+    "weight": {
+      "score": 0.5885,
+      "raw_vader_mean": 0.177,
+      "volume": 84,
+      "confidence": 0.168
     },
     "display": {
-      "score": 0.6163,
-      "raw_vader_mean": 0.2326,
-      "volume": 79,
-      "confidence": 0.158
+      "score": 0.6118,
+      "raw_vader_mean": 0.2237,
+      "volume": 101,
+      "confidence": 0.202
     }
   }
 }

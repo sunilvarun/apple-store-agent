@@ -87,13 +87,15 @@ def run():
     PROCESSED_DIR.mkdir(parents=True, exist_ok=True)
 
     print("Loading raw data...")
-    youtube_records = load_jsonl(RAW_DIR / "youtube_comments_iphone17.jsonl")
-    reddit_records = load_jsonl(RAW_DIR / "reddit_iphone17.jsonl")
+    youtube_records    = load_jsonl(RAW_DIR / "youtube_comments_iphone17.jsonl")
+    reddit_records     = load_jsonl(RAW_DIR / "reddit_iphone17.jsonl")
+    transcript_records = load_jsonl(RAW_DIR / "youtube_transcripts_iphone17.jsonl")
 
-    all_records = youtube_records + reddit_records
-    print(f"  YouTube: {len(youtube_records):,} comments")
-    print(f"  Reddit:  {len(reddit_records):,} comments")
-    print(f"  Total:   {len(all_records):,} comments")
+    all_records = youtube_records + reddit_records + transcript_records
+    print(f"  YouTube comments:    {len(youtube_records):,}")
+    print(f"  Reddit comments:     {len(reddit_records):,}")
+    print(f"  YouTube transcripts: {len(transcript_records):,}")
+    print(f"  Total:               {len(all_records):,}")
 
     # Stats
     dropped_short = 0

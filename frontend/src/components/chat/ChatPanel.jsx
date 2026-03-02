@@ -42,7 +42,7 @@ export default function ChatPanel({ isOpen, onClose }) {
       <div
         className="fixed top-0 right-0 bottom-0 z-50 flex flex-col bg-white shadow-2xl transition-transform duration-300"
         style={{
-          width: "min(420px, 100vw)",
+          width: "min(55vw, 680px)",
           transform: isOpen ? "translateX(0)" : "translateX(100%)",
           borderLeft: "1px solid #E5E5EA",
         }}>
@@ -107,10 +107,10 @@ export default function ChatPanel({ isOpen, onClose }) {
               onChange={e => setInput(e.target.value)}
               onKeyDown={handleKeyDown}
               placeholder="Ask about any iPhone…"
-              rows={1}
+              rows={4}
               disabled={streaming}
               className="flex-1 text-sm resize-none outline-none bg-transparent leading-relaxed text-apple-dark placeholder:text-apple-light"
-              style={{ maxHeight: 80 }}
+              style={{ maxHeight: 120 }}
             />
             <button
               onClick={handleSend}
