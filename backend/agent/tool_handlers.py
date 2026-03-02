@@ -62,10 +62,23 @@ SPEC_SCORERS = {
 }
 
 
+def _sentiment_label(positive_pct: int, volume: int) -> str:
+    if volume < 30:
+        return "limited reviews"
+    if positive_pct >= 75:
+        return "highly praised"
+    if positive_pct >= 60:
+        return "generally positive"
+    if positive_pct >= 45:
+        return "mixed reviews"
+    return "some concerns raised"
+
+
 def _blended_score(model_slug: str, aspect: str) -> dict:
-    """Return blended spec+review score and evidence for one aspect."""
+    """Return blended spec+review score, sentiment evidence, and sample quotes."""
     product = catalog_store.get_by_slug(model_slug)
     review_scores = catalog_store.get_review_scores(model_slug)
+    review_quotes = catalog_store.get_review_quotes(model_slug)
 
     spec_fn = SPEC_SCORERS.get(aspect)
     spec_score = spec_fn(product) if spec_fn and product else 0.5
@@ -74,15 +87,20 @@ def _blended_score(model_slug: str, aspect: str) -> dict:
     review_score = review.get("score", 0.5)
     confidence = review.get("confidence", 0.0)
     volume = review.get("volume", 0)
+    positive_pct = review.get("positive_pct", 50)
 
     # Blend: spec 60%, review 40% (weighted by confidence)
     blended = spec_score * 0.6 + review_score * confidence * 0.4 + spec_score * (1 - confidence) * 0.4
+
+    quote_data = review_quotes.get(aspect, {})
+    quotes = [q["text"] for q in quote_data.get("quotes", [])]
+
     return {
         "blended": round(blended, 3),
-        "spec_score": spec_score,
-        "review_score": review_score if confidence > 0 else None,
         "review_volume": volume,
-        "review_confidence": confidence,
+        "positive_pct": positive_pct,
+        "sentiment_label": _sentiment_label(positive_pct, volume),
+        "sample_quotes": quotes,
     }
 
 
@@ -152,19 +170,23 @@ def handle_get_product_details(inp: dict) -> dict:
         return {"error": f"Model '{slug}' not found. Available: {[p.model_slug for p in catalog_store.get_all()]}"}
 
     review_scores = catalog_store.get_review_scores(slug)
+    review_quotes = catalog_store.get_review_quotes(slug)
+
+    review_evidence = {}
+    for aspect, data in review_scores.items():
+        positive_pct = data.get("positive_pct", 50)
+        volume = data.get("volume", 0)
+        quote_data = review_quotes.get(aspect, {})
+        review_evidence[aspect] = {
+            "sentiment_label": _sentiment_label(positive_pct, volume),
+            "positive_pct": positive_pct,
+            "total_mentions": volume,
+            "sample_quotes": [q["text"] for q in quote_data.get("quotes", [])],
+        }
 
     return {
         "product": product.model_dump(),
-        "review_scores": review_scores,
-        "review_summary": {
-            aspect: {
-                "score": data.get("score"),
-                "sentiment": "positive" if data.get("score", 0.5) > 0.55 else "mixed",
-                "volume": data.get("volume"),
-                "confidence": data.get("confidence"),
-            }
-            for aspect, data in review_scores.items()
-        }
+        "review_evidence": review_evidence,
     }
 
 
@@ -226,11 +248,10 @@ def handle_rank_iphones(inp: dict) -> dict:
             aspect_score = evidence["blended"]
             total_score += aspect_score * weight
             score_breakdown[aspect] = {
-                "weighted_score": round(aspect_score * weight, 3),
-                "raw_score": evidence["blended"],
-                "spec_score": evidence["spec_score"],
-                "review_score": evidence["review_score"],
-                "review_volume": evidence["review_volume"],
+                "sentiment_label": evidence["sentiment_label"],
+                "positive_pct": evidence["positive_pct"],
+                "total_mentions": evidence["review_volume"],
+                "sample_quotes": evidence["sample_quotes"],
             }
 
         priority_sum = sum(v for v in priorities.values() if v > 0)
@@ -299,17 +320,17 @@ def handle_compare_products(inp: dict) -> dict:
     for row_label, fn in spec_rows.items():
         comparison[row_label] = {p.model_slug: fn(p) for p in products}
 
-    # Review score comparison for focused aspects
+    # Review evidence comparison for focused aspects
     review_comparison = {}
     for aspect in focus:
         review_comparison[aspect] = {}
         for p in products:
             evidence = _blended_score(p.model_slug, aspect)
-            review_scores = catalog_store.get_review_scores(p.model_slug)
-            vol = review_scores.get(aspect, {}).get("volume", 0)
             review_comparison[aspect][p.model_slug] = {
-                "score": evidence["blended"],
-                "review_volume": vol,
+                "sentiment_label": evidence["sentiment_label"],
+                "positive_pct": evidence["positive_pct"],
+                "total_mentions": evidence["review_volume"],
+                "sample_quotes": evidence["sample_quotes"][:1],  # one quote per model in compare
             }
 
     return {

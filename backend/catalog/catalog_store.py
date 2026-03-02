@@ -13,6 +13,7 @@ class CatalogStore:
     def __init__(self):
         self._products: list[IPhoneProduct] = []
         self._review_scores: dict = {}
+        self._review_quotes: dict = {}
 
     def load(self, catalog_path: Path, review_scores_path: Path):
         # Load product catalog
@@ -27,6 +28,12 @@ class CatalogStore:
         else:
             print(f"  [WARN] Review scores not found at {review_scores_path} — using specs only")
 
+        # Load review quotes (same directory as scores)
+        quotes_path = review_scores_path.parent / "review_quotes.json"
+        if quotes_path.exists():
+            self._review_quotes = json.loads(quotes_path.read_text())
+            print(f"  Loaded review quotes for {len(self._review_quotes)} models")
+
     def get_all(self, series: str | None = None, max_price: int | None = None) -> list[IPhoneProduct]:
         results = self._products
         if series:
@@ -40,6 +47,9 @@ class CatalogStore:
 
     def get_review_scores(self, model_slug: str) -> dict:
         return self._review_scores.get(model_slug, {})
+
+    def get_review_quotes(self, model_slug: str) -> dict:
+        return self._review_quotes.get(model_slug, {})
 
     def get_all_review_scores(self) -> dict:
         return self._review_scores

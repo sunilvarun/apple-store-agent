@@ -13,6 +13,7 @@ Usage:
     python pipeline/process/run_absa.py
 """
 
+import html
 import json
 from collections import defaultdict
 from pathlib import Path
@@ -22,8 +23,13 @@ from sentence_transformers import SentenceTransformer
 from tqdm import tqdm
 from vaderSentiment.vaderSentiment import SentimentIntensityAnalyzer
 
-PROCESSED_PATH = Path(__file__).parents[1] / "data" / "processed" / "reviews_normalized.jsonl"
-OUTPUT_PATH = Path(__file__).parents[1] / "data" / "derived" / "review_aspect_scores.json"
+PROCESSED_PATH  = Path(__file__).parents[1] / "data" / "processed" / "reviews_normalized.jsonl"
+OUTPUT_PATH     = Path(__file__).parents[1] / "data" / "derived" / "review_aspect_scores.json"
+QUOTES_PATH     = Path(__file__).parents[1] / "data" / "derived" / "review_quotes.json"
+
+QUOTE_MIN_WORDS   = 12    # too short → not informative
+QUOTE_MAX_WORDS   = 70    # too long → hard to read
+QUOTE_MIN_SENTIMENT = 0.25  # |vader compound| must be this strong to qualify as a quote
 
 EMBEDDING_MODEL = "all-MiniLM-L6-v2"
 ASPECT_THRESHOLD = 0.35   # cosine similarity minimum to assign an aspect
@@ -139,6 +145,8 @@ def run():
 
     # Per (model_slug, aspect) → list of VADER scores
     scores_by_model_aspect: dict[str, dict[str, list[float]]] = defaultdict(lambda: defaultdict(list))
+    # Per (model_slug, aspect) → list of (sentence, vader_compound) for quote extraction
+    quotes_by_model_aspect: dict[str, dict[str, list[tuple]]] = defaultdict(lambda: defaultdict(list))
 
     print("Running ABSA...")
     for review in tqdm(reviews, desc="Processing reviews"):
@@ -166,29 +174,63 @@ def run():
 
             for aspect in aspects:
                 scores_by_model_aspect[model_slug][aspect].append(vader_score)
+                # Collect quotes: strong sentiment, right length, no excessive emoji/caps
+                words = sentence.split()
+                alpha = [c for c in sentence if c.isalpha()]
+                caps_ratio = sum(1 for c in alpha if c.isupper()) / len(alpha) if alpha else 0
+                if (QUOTE_MIN_WORDS <= len(words) <= QUOTE_MAX_WORDS
+                        and abs(vader_score) >= QUOTE_MIN_SENTIMENT
+                        and caps_ratio < 0.4):
+                    quotes_by_model_aspect[model_slug][aspect].append((sentence, vader_score))
 
     # Aggregate
-    print("Aggregating scores...")
+    print("Aggregating scores and extracting quotes...")
     result: dict[str, dict[str, dict]] = {}
+    quotes_result: dict[str, dict[str, dict]] = {}
 
     for model_slug, aspect_scores in scores_by_model_aspect.items():
         result[model_slug] = {}
+        quotes_result[model_slug] = {}
         for aspect, scores in aspect_scores.items():
             volume = len(scores)
             mean_score = float(np.mean(scores))
             rescaled = rescale_vader(mean_score)
             confidence = min(1.0, volume / CONFIDENCE_VOLUME)
 
+            positive_count = sum(1 for s in scores if s > 0.05)
+            negative_count = sum(1 for s in scores if s < -0.05)
+            sentiment_total = positive_count + negative_count
+            positive_pct = round(positive_count / sentiment_total * 100) if sentiment_total else 50
+
             result[model_slug][aspect] = {
-                "score": round(rescaled, 4),       # 0 = very negative, 1 = very positive
+                "score": round(rescaled, 4),
                 "raw_vader_mean": round(mean_score, 4),
                 "volume": volume,
                 "confidence": round(confidence, 4),
+                "positive_pct": positive_pct,
             }
 
-    # Save
+            # Select best quotes: top 2 positive + 1 negative
+            candidates = quotes_by_model_aspect[model_slug][aspect]
+            pos_quotes = sorted([q for q in candidates if q[1] > 0.05], key=lambda x: -x[1])
+            neg_quotes = sorted([q for q in candidates if q[1] < -0.05], key=lambda x: x[1])
+            selected = [(t, "positive") for t, _ in pos_quotes[:2]] + \
+                       [(t, "negative") for t, _ in neg_quotes[:1]]
+
+            quotes_result[model_slug][aspect] = {
+                "positive_pct": positive_pct,
+                "total_mentions": volume,
+                "quotes": [{"text": html.unescape(t), "sentiment": s} for t, s in selected],
+            }
+
+    # Save scores
     with open(OUTPUT_PATH, "w", encoding="utf-8") as f:
         json.dump(result, f, indent=2)
+
+    # Save quotes
+    with open(QUOTES_PATH, "w", encoding="utf-8") as f:
+        json.dump(quotes_result, f, indent=2)
+    print(f"Quotes: {QUOTES_PATH}")
 
     # Print summary
     print(f"\n--- ABSA complete ---")

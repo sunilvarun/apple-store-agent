@@ -1,0 +1,570 @@
+{
+  "iphone-17-pro": {
+    "camera": {
+      "positive_pct": 79,
+      "total_mentions": 985,
+      "quotes": [
+        {
+          "text": "The Photographic Styles are cool and can definitely make a photo look better, and Portrait Mode has made very nice improvements over the years, but if I want the absolute best out of my iPhone, I\u2019ll use a third party camera app, shoot Bayer RAW, and edit in something like Lightroom or Luminar Neo.",
+          "sentiment": "positive"
+        },
+        {
+          "text": "But, the iPhone 17 Pro now has a 100mm/4x telephoto lens which great and it's a sweet spot for portraits.<br>And thanks for the review.",
+          "sentiment": "positive"
+        },
+        {
+          "text": "I could get over the camera but this ruins the phone and shows its incompetence to the Samsung edge",
+          "sentiment": "negative"
+        }
+      ]
+    },
+    "battery": {
+      "positive_pct": 75,
+      "total_mentions": 294,
+      "quotes": [
+        {
+          "text": "\"Same-sung\"\ud83d\ude02 camera,  Battery, charging, allll 5 Years old!\ud83d\ude02 and s26u will REMAIN\ud83d\ude02\ud83d\ude02\ud83d\ude02\ud83d\ude02",
+          "sentiment": "positive"
+        },
+        {
+          "text": "But, for a phone that ships in the volume that the iPhone does, very happy to see that sort of improvement when last year's phone already had really good battery.",
+          "sentiment": "positive"
+        },
+        {
+          "text": "<br><br>I took my new phone on a trip to Hawaii and I literally had to keep it plugged in constantly because it wouldn't charge past 20% due to heat \ud83d\ude22\ud83d\ude22\ud83d\ude22",
+          "sentiment": "negative"
+        }
+      ]
+    },
+    "performance": {
+      "positive_pct": 93,
+      "total_mentions": 67,
+      "quotes": [
+        {
+          "text": "I had to return my phone 17 pro because there was just to many things it did slow but I wanted to force myself to love it because hardware is so good but damn the software I couldn't",
+          "sentiment": "positive"
+        },
+        {
+          "text": "But still, this is just about the most powerful iPhone we've seen yet, and it can handle heavy tasks and games with ease.",
+          "sentiment": "positive"
+        }
+      ]
+    },
+    "display": {
+      "positive_pct": 77,
+      "total_mentions": 207,
+      "quotes": [
+        {
+          "text": "<a href=\"https://www.youtube.com/watch?v=IYtDS27znnM&t=582\">9:42</a>, you say the sign was super bright, iphone image make it so; samsung just flatten it out, yes better shadow detail but doesnt give me the impression that the sign was suuuper bright, is as bright as you in samsung image.",
+          "sentiment": "positive"
+        },
+        {
+          "text": "because this display is so amazing now, our latest pretty planets wallpapers back by Ollie looks even better.",
+          "sentiment": "positive"
+        },
+        {
+          "text": "It\u2019s sufficient resolution for 99.9% video users, it doesn\u2019t suck \ud83d\ude44 Only tech nerds think the way you do.",
+          "sentiment": "negative"
+        }
+      ]
+    },
+    "heating": {
+      "positive_pct": 78,
+      "total_mentions": 50,
+      "quotes": [
+        {
+          "text": "It kind of reminds me of like MacBook Pros where um they're so efficient now they don't really tend to get warm or the fans",
+          "sentiment": "positive"
+        },
+        {
+          "text": "Thermals are so much better as well, my 17 Pro barely gets warm regardless if I\u2019m charging, using it outdoors or playing games.",
+          "sentiment": "positive"
+        },
+        {
+          "text": "I don't like that my phone gets hot to the point it feels uncomfortable.",
+          "sentiment": "negative"
+        }
+      ]
+    },
+    "durability": {
+      "positive_pct": 60,
+      "total_mentions": 100,
+      "quotes": [
+        {
+          "text": "Aluminium, well been using iPhone 12 till now, wanted an upgrade but im still broke, surviving at 66% battery health\ud83e\udee0, thanks for the information and feedback back of the phone\ud83d\ude0a",
+          "sentiment": "positive"
+        },
+        {
+          "text": "Which means it's great that Apple has finally improved scratch resistance by three times, right?",
+          "sentiment": "positive"
+        },
+        {
+          "text": "Tiny chip in the bottom, knows exactly when it happened, dropped so bad that he broke the screen protector, no clue.",
+          "sentiment": "negative"
+        }
+      ]
+    },
+    "value": {
+      "positive_pct": 81,
+      "total_mentions": 149,
+      "quotes": [
+        {
+          "text": "If I can save a few hundred bucks but only have a single camera like the good old days...sign me up.",
+          "sentiment": "positive"
+        },
+        {
+          "text": "the price 1,100 bucks, but that's going to get you only 256 gigs of storage, which for Apple is pretty good for a starting",
+          "sentiment": "positive"
+        },
+        {
+          "text": "The problem is most folks are tired of dropping \u00a31k on constant upgrades.",
+          "sentiment": "negative"
+        }
+      ]
+    },
+    "weight": {
+      "positive_pct": 77,
+      "total_mentions": 25,
+      "quotes": [
+        {
+          "text": "kind of person who can let go of the extra weight and bulk that has piled up on our phones over the past decade, well then the Air is going to feel like something pretty special.",
+          "sentiment": "positive"
+        },
+        {
+          "text": "17 Pro, at least how it feels in the hand and the screen real estate, it doesn't come with the added bulk or weight.",
+          "sentiment": "positive"
+        },
+        {
+          "text": "I love its thinness but sadly at the expense of battery life, only one camera and usb 2 on a \u00a31000 phone.",
+          "sentiment": "negative"
+        }
+      ]
+    }
+  },
+  "iphone-17-pro-max": {
+    "camera": {
+      "positive_pct": 75,
+      "total_mentions": 531,
+      "quotes": [
+        {
+          "text": "<br><br>In this moment I feel more confortable with the Air than the 16 Pro Max even with the things I lost (Second speaker, angular and telephoto camera, bigger screen) but I love the tihings I won (Smaller size, less weight, better selfie camera, lighter screen).",
+          "sentiment": "positive"
+        },
+        {
+          "text": "though, I do think you need to be kind of like a hobbyist or like a pixel peeper or someone who's like really into photography to really appreciate like the improved photo quality that is on",
+          "sentiment": "positive"
+        },
+        {
+          "text": "<br>I thought about getting Air to replace 16 pro max, but realized it\u2019s worse in everything (even the main camera is worse, it has 25% smaller sensor in Air).",
+          "sentiment": "negative"
+        }
+      ]
+    },
+    "battery": {
+      "positive_pct": 68,
+      "total_mentions": 523,
+      "quotes": [
+        {
+          "text": "I went from 11 pro max to 17 but miss the better battery life for playing Pokemon go but I didn\u2019t like the colours of the 17 pros and got a green 17 love it colour",
+          "sentiment": "positive"
+        },
+        {
+          "text": "I was gonna be all excited but realized my 15 Pro Max battery is still perfectly fine and if it\u2019s not I work at a phone kiosk and can plug it in and I also have a MagSafe battery pack lol",
+          "sentiment": "positive"
+        },
+        {
+          "text": "All those stupid animations and transitions are so pointless if it\u2019s eating up the battery ffs",
+          "sentiment": "negative"
+        }
+      ]
+    },
+    "value": {
+      "positive_pct": 71,
+      "total_mentions": 149,
+      "quotes": [
+        {
+          "text": "Trading in my iPhone 14 for the 17 pro max was a sweet deal for me ,it was valued at $830\ud83d\udc4c\ud83c\udffd\ud83d\ude0e",
+          "sentiment": "positive"
+        },
+        {
+          "text": "I honestly wish I would have saved money but I also love the 17 Pro.",
+          "sentiment": "positive"
+        },
+        {
+          "text": "For 999$, you get a weaker GPU, small battery, and only a single camera.<br>They just knew they can't offer an iPhone 17 \"Plus\" with a 120hz display since everyone would take it instead of the Pro Max, so they had to fuck us over with some gimmick",
+          "sentiment": "negative"
+        }
+      ]
+    },
+    "display": {
+      "positive_pct": 76,
+      "total_mentions": 189,
+      "quotes": [
+        {
+          "text": "This one only got a bit hot when restoring on the first day.<br>I love the camera plateau look and the orange is great, though all 3 colors are tempting.",
+          "sentiment": "positive"
+        },
+        {
+          "text": "Im getting used to the smaller screen but overall its a wonderful and worthy upgrade.",
+          "sentiment": "positive"
+        },
+        {
+          "text": "We were so close getting a product (RED) iPhone Pro model, but instead we get this ugly ass orange.",
+          "sentiment": "negative"
+        }
+      ]
+    },
+    "heating": {
+      "positive_pct": 94,
+      "total_mentions": 83,
+      "quotes": [
+        {
+          "text": "I feel like all previous iPhones I've had before this one, my iPhone would overheat if I did anything of like significance on there, especially in like bright sunny conditions.",
+          "sentiment": "positive"
+        },
+        {
+          "text": "This one only got a bit hot when restoring on the first day.<br>I love the camera plateau look and the orange is great, though all 3 colors are tempting.",
+          "sentiment": "positive"
+        },
+        {
+          "text": "my iphone 16e would never get hot and after ios 26 it gets hot just browsing the internet in regular use \ud83d\ude22 and many UI elements feel laggy",
+          "sentiment": "negative"
+        }
+      ]
+    },
+    "durability": {
+      "positive_pct": 62,
+      "total_mentions": 84,
+      "quotes": [
+        {
+          "text": "So funny how they were like \u201cWe did go back to scratch and designed them in aluminum\u201d.",
+          "sentiment": "positive"
+        },
+        {
+          "text": "The scratch magnet pro max \ud83d\udc80 it's like it's made of playdough the body scratches so easily",
+          "sentiment": "positive"
+        },
+        {
+          "text": "Um, but I will say that I dropped it only one time and I got some nasty dents on the corner of this phone.",
+          "sentiment": "negative"
+        }
+      ]
+    },
+    "weight": {
+      "positive_pct": 89,
+      "total_mentions": 46,
+      "quotes": [
+        {
+          "text": "At first it was amazing to hold the different weight and the thinnest.",
+          "sentiment": "positive"
+        },
+        {
+          "text": "Feels weightless in my hand and don\u2019t even notice it in my pocket.",
+          "sentiment": "positive"
+        }
+      ]
+    },
+    "performance": {
+      "positive_pct": 68,
+      "total_mentions": 94,
+      "quotes": [
+        {
+          "text": "The performance boost is because they finally updated the ancient modem!!<br>(and the Ram helps too).",
+          "sentiment": "positive"
+        },
+        {
+          "text": "the cpu feels definitely newer and snappier and the cameras are better too....",
+          "sentiment": "positive"
+        },
+        {
+          "text": "<a href=\"https://www.youtube.com/watch?v=pOD5nHk909A&t=64\">1:04</a> you say \"towards the end of my time withthe iphone 16 pro max, it felt sluggish, it lagged, it was full of glitches\" -wtf man?",
+          "sentiment": "negative"
+        }
+      ]
+    }
+  },
+  "iphone-17": {
+    "value": {
+      "positive_pct": 76,
+      "total_mentions": 155,
+      "quotes": [
+        {
+          "text": "the new pro looks great but I'm loving the value of the base 17 \ud83e\udd75",
+          "sentiment": "positive"
+        },
+        {
+          "text": "But this year seems to be great the upgrade is well worth it.",
+          "sentiment": "positive"
+        },
+        {
+          "text": "No, $800 for a phone with so many compromises are just dead stupid (256Gb is bare minimum in 2025, and for that price how's not having any telephoto?)",
+          "sentiment": "negative"
+        }
+      ]
+    },
+    "performance": {
+      "positive_pct": 86,
+      "total_mentions": 62,
+      "quotes": [
+        {
+          "text": "Slightly bigger screen, double the storage, brighter screen, anti-reflective coating, camera control, A19, 48MP ultrawide, 1Hz refresh, better selfie cameras and better battery life.",
+          "sentiment": "positive"
+        },
+        {
+          "text": "Ah, how about the zoom, better battery, better cooling, extra RAM, and a (slightly) faster CPU?",
+          "sentiment": "positive"
+        },
+        {
+          "text": "to do with adaptive power sort of ramping down the processor speed but going through occasionally I would have stutters here and there that could be the operating system or it could be the phone.",
+          "sentiment": "negative"
+        }
+      ]
+    },
+    "display": {
+      "positive_pct": 83,
+      "total_mentions": 154,
+      "quotes": [
+        {
+          "text": "Iphone 17 is the best for most of the people\ud83c\udf89.<br>The display upgrade is wonderful \ud83d\udc4c\ud83c\udffc\ud83d\udc4c\ud83c\udffc",
+          "sentiment": "positive"
+        },
+        {
+          "text": "You're getting pretty much a prolevel display, much tougher glass, way better cameras, especially getting a boost in the ultrawide department, and pretty good battery life.",
+          "sentiment": "positive"
+        },
+        {
+          "text": "Ngl, I swore off Apple after leaving my SE gen 2 for a Pixel 8, but screen problems have pushed me to need an upgrade sooner than I wanted.",
+          "sentiment": "negative"
+        }
+      ]
+    },
+    "camera": {
+      "positive_pct": 81,
+      "total_mentions": 386,
+      "quotes": [
+        {
+          "text": "You're getting pretty much a prolevel display, much tougher glass, way better cameras, especially getting a boost in the ultrawide department, and pretty good battery life.",
+          "sentiment": "positive"
+        },
+        {
+          "text": "is honestly going to be a pretty big deal for you selfie lovers, vloggers, content creators, influencers, those who just really want an improved front-facing camera.",
+          "sentiment": "positive"
+        },
+        {
+          "text": "i shoot in raw and color grade my shit and my wife shoots video vertically for snapchat.",
+          "sentiment": "negative"
+        }
+      ]
+    },
+    "battery": {
+      "positive_pct": 78,
+      "total_mentions": 326,
+      "quotes": [
+        {
+          "text": "Thinking about the battery improvements, it\u2019s a reminder of how much progress comes not from flashy features but from optimizing fundamentals like chip efficiency and energy storage.",
+          "sentiment": "positive"
+        },
+        {
+          "text": "saying 36% improvement and then it performs the same \ud83e\udd23\ud83e\udd23\ud83e\udd23 and then saying Air has better battery than 16 Pro, when it s leagues behind 16.",
+          "sentiment": "positive"
+        },
+        {
+          "text": "So worse battery, worse camera, possible heating issue, USB2 while more money than the base 17 ??",
+          "sentiment": "negative"
+        }
+      ]
+    },
+    "durability": {
+      "positive_pct": 86,
+      "total_mentions": 26,
+      "quotes": [
+        {
+          "text": "Phone\u2019s build quality is good, 2-3 times it fell very hard on concrete screen side on 6ft height, and still no scratches ( had screen guard which broke completely and case also) but other than that, some minor UI bugs, Camera is amazing, gets work done!!",
+          "sentiment": "positive"
+        },
+        {
+          "text": "back with an aluminum frame, but because of how light this phone is, I've actually been enjoying this form factor a lot more.",
+          "sentiment": "positive"
+        },
+        {
+          "text": "I just came from the Jerry right everything video <br>Short version: the new 17's screen for the first time IS far more scratch resistant and does not scratch at a level 6 with deeper groves at a level 7<br><br><br><br><br>The long version: it's a bit odd though.",
+          "sentiment": "negative"
+        }
+      ]
+    },
+    "heating": {
+      "positive_pct": 62,
+      "total_mentions": 22,
+      "quotes": [
+        {
+          "text": "Love the test but i would like a test on how i use a phone in real life like gps, delivery app in use, music app with Bluetooth, news, and one gaming app in the backgroud, finally charging in 100 degree heat phone always overheats like to see a phone survive without overheating",
+          "sentiment": "positive"
+        },
+        {
+          "text": "gotten super hot at all, so uh I think it's doing pretty well.",
+          "sentiment": "positive"
+        },
+        {
+          "text": "My 16 pro gets hot but it\u2019s not something I\u2019m willing to lose quality in design over.",
+          "sentiment": "negative"
+        }
+      ]
+    },
+    "weight": {
+      "positive_pct": 75,
+      "total_mentions": 13,
+      "quotes": [
+        {
+          "text": "How big are your hands man, making this thing look like the iPhone mini \ud83d\ude02",
+          "sentiment": "positive"
+        }
+      ]
+    }
+  },
+  "iphone-17-air": {
+    "value": {
+      "positive_pct": 58,
+      "total_mentions": 120,
+      "quotes": [
+        {
+          "text": "But that being said it\u2019s a beautiful phone and a beautiful shape, new design refreshing, and all that but I think it was overpriced.",
+          "sentiment": "positive"
+        },
+        {
+          "text": "I got a good price on that and it feels so good in the hand.",
+          "sentiment": "positive"
+        },
+        {
+          "text": "I seriously LOVE the air, BUT GOSH I HATE THE PRICE, and that's the only reason why I am not buying it.",
+          "sentiment": "negative"
+        }
+      ]
+    },
+    "camera": {
+      "positive_pct": 73,
+      "total_mentions": 350,
+      "quotes": [
+        {
+          "text": "I don't interested on this phone but wow this video quality is amazing, the visual, audio, editing, so good, respect!",
+          "sentiment": "positive"
+        },
+        {
+          "text": "0 bugs, amazing camera, 6000mah silicon carbide battery, a screen that is way better and can even reach 4500(!!) nits, very fast charging + fast wireless charging, physical dual sim slot + e-sim support, Snapdragon 8 elite, super fast super reliable fingerprint sensor under the screen.",
+          "sentiment": "positive"
+        },
+        {
+          "text": "No ultrawide camera, no mmWave 5G, horrible speakers, worse battery.<br>Plus, who woke up one day and thought: \"damn, I wish my iPhone were thinner\"?",
+          "sentiment": "negative"
+        }
+      ]
+    },
+    "battery": {
+      "positive_pct": 66,
+      "total_mentions": 339,
+      "quotes": [
+        {
+          "text": "0 bugs, amazing camera, 6000mah silicon carbide battery, a screen that is way better and can even reach 4500(!!) nits, very fast charging + fast wireless charging, physical dual sim slot + e-sim support, Snapdragon 8 elite, super fast super reliable fingerprint sensor under the screen.",
+          "sentiment": "positive"
+        },
+        {
+          "text": "But which phones have good, better or best battery life after a year of daily use?",
+          "sentiment": "positive"
+        },
+        {
+          "text": "Battery life is getting worse as the months go along and single speaker is embarrassingly bad.",
+          "sentiment": "negative"
+        }
+      ]
+    },
+    "heating": {
+      "positive_pct": 75,
+      "total_mentions": 28,
+      "quotes": [
+        {
+          "text": "temperatures from the iPhone Air and it seems to be dissipating that heat generally pretty well probably due to the aluminum or aluminium frame and seems to keep well within the temperature you would expect.",
+          "sentiment": "positive"
+        },
+        {
+          "text": "And quite surprisingly, the iPhone Air does a respectable job when it comes to thermal management considering the thin form factor.",
+          "sentiment": "positive"
+        },
+        {
+          "text": "I had the air and returned it because the battery didn\u2019t hold half a day and the chip area was kind of HOT \ud83d\udd25.",
+          "sentiment": "negative"
+        }
+      ]
+    },
+    "durability": {
+      "positive_pct": 59,
+      "total_mentions": 37,
+      "quotes": [
+        {
+          "text": "I already knew what I was buying and it really delivered my expectations: ideal for simple everyday tasks and with the added bonus of being very durable, according to various reviews you can find online.",
+          "sentiment": "positive"
+        },
+        {
+          "text": "I\u2019m probably going to get the air but got to protect it from drops and random scratches.",
+          "sentiment": "positive"
+        },
+        {
+          "text": "Here after Zack\u2019s durability test of iPhone Air, and damn that x3 scratch resistance claim is real!",
+          "sentiment": "negative"
+        }
+      ]
+    },
+    "performance": {
+      "positive_pct": 86,
+      "total_mentions": 28,
+      "quotes": [
+        {
+          "text": "it\u00b4s a great phone \r<br>premium feel \r<br>light weight, doesn\u00b4t feel like a brick\r<br>feels amazing in the hand\r<br>3000 nits peak brightness \r<br>refresh rate of up to 120 Hz.",
+          "sentiment": "positive"
+        },
+        {
+          "text": "So to be specific, for my own use, like standby time I noticed was pretty good, like it is on so many other iPhones, but this Pro chip can spike up pretty quickly.",
+          "sentiment": "positive"
+        },
+        {
+          "text": "I also notice it lags a lot and i don't even game on it",
+          "sentiment": "negative"
+        }
+      ]
+    },
+    "weight": {
+      "positive_pct": 82,
+      "total_mentions": 84,
+      "quotes": [
+        {
+          "text": "Slim and beautiful, but also powerful enough for everything you want from a regular phone.",
+          "sentiment": "positive"
+        },
+        {
+          "text": "heavy, and I've actually been testing the iPhone Air, kind of giving a second win to this device.",
+          "sentiment": "positive"
+        },
+        {
+          "text": "\ud83d\ude22 is it me or our host has lost 1/3rd or 2rds of his weight since early 2025?",
+          "sentiment": "negative"
+        }
+      ]
+    },
+    "display": {
+      "positive_pct": 83,
+      "total_mentions": 101,
+      "quotes": [
+        {
+          "text": "it\u00b4s a great phone \r<br>premium feel \r<br>light weight, doesn\u00b4t feel like a brick\r<br>feels amazing in the hand\r<br>3000 nits peak brightness \r<br>refresh rate of up to 120 Hz.",
+          "sentiment": "positive"
+        },
+        {
+          "text": "So like the display can throttle down all the way to one hertz and the A19 Pro chip can underclock super well.",
+          "sentiment": "positive"
+        },
+        {
+          "text": "<a href=\"https://www.youtube.com/watch?v=z2kzIwdcXeQ&t=142\">2:22</a> but they can\u2019t do it without dimming the screen due to poor thermals.",
+          "sentiment": "negative"
+        }
+      ]
+    }
+  }
+}
